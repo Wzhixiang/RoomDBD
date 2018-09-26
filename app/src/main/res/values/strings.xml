@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">RoomDBD</string>
+
+    <string name="text_title_single">单表操作</string>
+    <string name="text_title_mutil">联表查询</string>
+    <string name="text_title_version">数据库版本</string>
+
+    <string name="text_build_module">
+        如何构建在kotlin下使用Room数据库环境？\n
+        在module build.gradle下添加apply plugin: \'kotlin-kapt\'\n
+        并在\n
+        dependencies {
+            implementation \"android.arch.persistence.room:runtime:1.1.1\"
+            kapt \"android.arch.persistence.room:compiler:1.1.1\"
+        }
+    </string>
+
+    <string name="text_create_database">
+        如何使用Room创建数据库？\n
+        1.创建表：带上@Entity注解的类，就是表，但只是定义了一张什么样的表，还未加入数据中\n
+        主键：用@PrimaryKey注解修饰参数
+        外键：属于@Entity成员\n
+        写法->foreignKeys = [(ForeignKey(entity = Table::class, \n
+        parentColumns = ["Column1","Column2",...,"ColumnN"], \n
+        childColumns = ["Column1","Column2",...,"ColumnN"], onDelete = ForeignKey.CASCADE))]\n
+        索引：属于@Entity成员\n
+        写法->indices = [Index(value = ["Column1","Column2",...,"ColumnN"])]\n
+
+        2.创建数据库：使用@Database注解修饰的类就是数据库的实现类\n
+        表：entities = [TableClass1::class, TableClass2::class, ..., TableClassN::class]，这里才是将表加入数据\n
+        版本：version = 1\n
+
+        3.创建操作类：使用@Dao注解修饰的类实则实现表相关操作，如：增、删、改、查\n
+        相关操作方法需要使用：@Query、@Insert、@Update、@Delete修饰\n
+
+
+    </string>
+
+    <string name="text_about_database_version">
+        常见数据库升级有以下几种情况：\n
+        1.表的变更：\n
+        a.新增表\n
+        CREATE TABLE table_name（表名） (column_name1（字段名） datatype（类型） PRIMARY KEY(one or more columns),\n
+        column_name2（字段名） datatype（类型）,\n
+        .....columnN（字段名） datatype（类型）)\n
+        b.删除表\n
+        DROP TABLE table_name（表名）\n\n
+
+        2.表中内容变更\n
+        a.新增字段\n
+        ALTER TABLE table_name（表名） ADD COLUMN column_name（字段名） datatype（类型）\n
+        b.删除字段\n
+        ALTER TABLE table_name（表名） DROP COLUMN column_name（字段名）\n\n
+
+        更多sqlite语法请查看菜鸟教程（http://www.runoob.com/sqlite/sqlite-tutorial.html）\n\n
+
+        Room数据库如何升级？\n
+        1.变更version：\n
+        在数据库类的注解@Database(entities = [Class1::class, Class2::class, ..., ClassN::class], version = n)中更改version（版本号）\n
+
+        2.创建变更类Migration：\n
+        继承Migration类，重写migrate(SupportSQLiteDatabase)方法,在migrate(SupportSQLiteDatabase)中处理数据库变更操作。\n
+
+        3.添加变更类：\n
+        在数据库类，创建数据库的方法中添加addMigrations(Migration(startVersion, endVersion))\n
+    </string>
+</resources>
